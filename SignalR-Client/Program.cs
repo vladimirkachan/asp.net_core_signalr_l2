@@ -14,10 +14,18 @@ namespace SignalR_Client
             await InitSignalRConnection();
             for (; ; )
             {
-                Console.WriteLine("Enter your message or command");
+                Console.WriteLine("Enter your message or command: ");
                 var input = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(input)) continue;
                 if (input.ToUpper() == "Q") return;
+                if (input == "setname")
+                {
+                    Console.WriteLine("Enter your name: ");
+                    var name = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(name)) continue;
+                    await connection.SendAsync("SetName", name);
+                    Console.WriteLine("Name saved");
+                }
                 else
                 {
                     await connection.SendAsync("SendMessage", new Message {Title = "Simple message", Body = input});
